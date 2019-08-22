@@ -21,23 +21,22 @@ import com.android.example.github.GithubApp
 import dagger.BindsInstance
 import dagger.Component
 import dagger.android.AndroidInjectionModule
+import dagger.android.AndroidInjector
 import javax.inject.Singleton
 
 @Singleton
 @Component(
-    modules = [
-        AndroidInjectionModule::class,
-        AppModule::class,
-        MainActivityModule::class]
+        modules = [
+            AndroidInjectionModule::class,
+            AppModule::class,
+            MainActivityModule::class]
 )
-interface AppComponent {
-    @Component.Builder
-    interface Builder {
-        @BindsInstance
-        fun application(application: Application): Builder
+interface AppComponent : AndroidInjector<GithubApp> {
 
-        fun build(): AppComponent
+    @Component.Factory
+    interface Factory {
+        fun create(@BindsInstance instance: Application): AppComponent
     }
 
-    fun inject(githubApp: GithubApp)
+    override fun inject(githubApp: GithubApp)
 }
